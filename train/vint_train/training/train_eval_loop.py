@@ -4,8 +4,8 @@ import numpy as np
 from typing import List, Optional, Dict
 from prettytable import PrettyTable
 
-from vint_train.training.train_utils import train, evaluate
-from vint_train.training.train_utils import train_nomad, evaluate_nomad
+from policy_sources.visualnav_transformer.train.vint_train.training.train_utils import train, evaluate
+from policy_sources.visualnav_transformer.train.vint_train.training.train_utils import train_nomad, evaluate_nomad
 
 import torch
 import torch.nn as nn
@@ -38,6 +38,7 @@ def train_eval_loop(
     learn_angle: bool = True,
     use_wandb: bool = True,
     eval_fraction: float = 0.25,
+    save_freq: int = 20
 ):
     """
     Train and evaluate the model for several epochs (vint or gnm models)
@@ -138,7 +139,9 @@ def train_eval_loop(
 
         numbered_path = os.path.join(project_folder, f"{epoch}.pth")
         torch.save(checkpoint, latest_path)
-        torch.save(checkpoint, numbered_path)  # keep track of model at every epoch
+
+        if (epoch + 1) % save_freq == 0:
+            torch.save(checkpoint, numbered_path)  # keep track of model at every epoch
 
     # Flush the last set of eval logs
     wandb.log({})

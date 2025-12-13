@@ -7,7 +7,8 @@ import wandb
 import yaml
 import torch
 import torch.nn as nn
-from vint_train.visualizing.visualize_utils import (
+from pathlib import Path
+from policy_sources.visualnav_transformer.train.vint_train.visualizing.visualize_utils import (
     to_numpy,
     numpy_to_img,
     VIZ_IMAGE_SIZE,
@@ -20,9 +21,11 @@ from vint_train.visualizing.visualize_utils import (
 )
 
 # load data_config.yaml
-with open(os.path.join(os.path.dirname(__file__), "../data/data_config.yaml"), "r") as f:
+_root_data_config = Path(__file__).resolve().parents[5] / "datasets" / "data_config.yaml"
+_default_data_config = Path(__file__).resolve().parent.parent / "data" / "data_config.yaml"
+data_config_path = _root_data_config if _root_data_config.exists() else _default_data_config
+with open(data_config_path, "r") as f:
     data_config = yaml.safe_load(f)
-
 
 def visualize_traj_pred(
     batch_obs_images: np.ndarray,

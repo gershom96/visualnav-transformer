@@ -359,13 +359,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--config",
         "-c",
-        default="config/vint.yaml",
+        default="configs/chop_vint.yaml",
         type=str,
         help="Path to the config file in train_config folder",
     )
     args = parser.parse_args()
 
-    with open("config/defaults.yaml", "r") as f:
+    with open("configs/defaults.yaml", "r") as f:
         default_config = yaml.safe_load(f)
 
     config = default_config

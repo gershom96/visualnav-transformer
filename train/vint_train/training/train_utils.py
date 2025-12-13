@@ -7,11 +7,11 @@ from prettytable import PrettyTable
 import tqdm
 import itertools
 
-from vint_train.visualizing.action_utils import visualize_traj_pred, plot_trajs_and_points
-from vint_train.visualizing.distance_utils import visualize_dist_pred
-from vint_train.visualizing.visualize_utils import to_numpy, from_numpy
-from vint_train.training.logger import Logger
-from vint_train.data.data_utils import VISUALIZATION_IMAGE_SIZE
+from policy_sources.visualnav_transformer.train.vint_train.visualizing.action_utils import visualize_traj_pred, plot_trajs_and_points
+from policy_sources.visualnav_transformer.train.vint_train.visualizing.distance_utils import visualize_dist_pred
+from policy_sources.visualnav_transformer.train.vint_train.visualizing.visualize_utils import to_numpy, from_numpy
+from policy_sources.visualnav_transformer.train.vint_train.training.logger import Logger
+from policy_sources.visualnav_transformer.train.vint_train.data.data_utils import VISUALIZATION_IMAGE_SIZE
 from diffusers.schedulers.scheduling_ddpm import DDPMScheduler
 from diffusers.training_utils import EMAModel
 
@@ -23,10 +23,15 @@ from torch.optim import Adam
 from torchvision import transforms
 import torchvision.transforms.functional as TF
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-# LOAD DATA CONFIG
-with open(os.path.join(os.path.dirname(__file__), "../data/data_config.yaml"), "r") as f:
+# load data_config.yaml
+_root_data_config = Path(__file__).resolve().parents[5] / "datasets" / "data_config.yaml"
+_default_data_config = Path(__file__).resolve().parent.parent / "data" / "data_config.yaml"
+data_config_path = _root_data_config if _root_data_config.exists() else _default_data_config
+with open(data_config_path, "r") as f:
     data_config = yaml.safe_load(f)
+# print(data_config)
 # POPULATE ACTION STATS
 ACTION_STATS = {}
 for key in data_config['action_stats']:
@@ -1175,5 +1180,4 @@ def visualize_diffusion_action_distribution(
         plt.close(fig)
     if len(wandb_list) > 0 and use_wandb:
         wandb.log({f"{eval_type}_action_samples": wandb_list}, commit=False)
-
 
