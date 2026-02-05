@@ -15,7 +15,7 @@ if [ -z "$1" ]; then
 fi
 
 BAG_NAME="$1"
-CAMERA_TOPIC="${2:-/camera/image_raw}"
+CAMERA_TOPIC="${2:-/camera/camera/color/image_raw}"
 NO_TELEOP=0
 
 if [ "${3:-}" = "--no-teleop" ]; then
@@ -24,7 +24,7 @@ fi
 
 LAUNCH_CMD="${LAUNCH_CMD:-ros2 launch realsense2_camera rs_launch.py}"
 TELEOP_CMD="${TELEOP_CMD:-ros2 run teleop_twist_keyboard teleop_twist_keyboard}"
-BAG_DIR="${BAG_DIR:-../topomaps/bags}"
+BAG_DIR="${BAG_DIR:-./policy_sources/visualnav_transformer/deployment/topomaps/bags/}"
 
 session_name="record_bag_ros2_$(date +%s)"
 tmux new-session -d -s "$session_name"

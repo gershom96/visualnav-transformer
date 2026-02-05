@@ -18,11 +18,11 @@ fi
 
 TOPOMAP_NAME="$1"
 BAG_FILE="$2"
-IMAGE_TOPIC="${IMAGE_TOPIC:-/camera/image_raw}"
+IMAGE_TOPIC="${IMAGE_TOPIC:-/camera/camera/color/image_raw}"
 DT="${DT:-1}"
 PLAYBACK_RATE="${PLAYBACK_RATE:-1.5}"
 LAUNCH_CMD="${LAUNCH_CMD:-true}"
-BAG_DIR="${BAG_DIR:-../topomaps/bags}"
+BAG_DIR="./policy_sources/visualnav_transformer/deployment/topomaps/bags/${3:-test}/"
 
 session_name="create_topomap_ros2_$(date +%s)"
 tmux new-session -d -s "$session_name"
@@ -39,11 +39,10 @@ tmux send-keys "$LAUNCH_CMD" Enter
 
 # Run the topomap creator
 tmux select-pane -t 1
-tmux send-keys "python create_topomap_ros2.py --dt $DT --dir $TOPOMAP_NAME --image-topic $IMAGE_TOPIC" Enter
+tmux send-keys "python policy_sources/visualnav_transformer/deployment/src/create_topomap_ros2.py --dt $DT --dir $TOPOMAP_NAME --image-topic $IMAGE_TOPIC" Enter
 
 # Play back the rosbag2
 tmux select-pane -t 2
-tmux send-keys "mkdir -p $BAG_DIR" Enter
 tmux send-keys "cd $BAG_DIR" Enter
 tmux send-keys "ros2 bag play -r $PLAYBACK_RATE $BAG_FILE" Enter
 

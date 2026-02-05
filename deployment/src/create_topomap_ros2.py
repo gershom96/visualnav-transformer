@@ -12,8 +12,8 @@ from sensor_msgs.msg import Image, Joy
 
 from utils import msg_to_pil
 
-DEFAULT_IMAGE_TOPIC = "/camera/image_raw"
-TOPOMAP_IMAGES_DIR = "../topomaps/images"
+DEFAULT_IMAGE_TOPIC = "/camera/camera/color/image_raw"
+TOPOMAP_IMAGES_DIR = "./policy_sources/visualnav_transformer/deployment/topomaps/images"
 
 
 def remove_files_in_dir(dir_path: str):
